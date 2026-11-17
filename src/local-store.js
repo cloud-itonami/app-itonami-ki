@@ -4,6 +4,7 @@
 // given. Nothing here talks to a network.
 
 const PAGE_MAX = 100;
+const SEALED_PREFIX = "sealed:";
 
 const hex = (bytes) => Array.from(new Uint8Array(bytes), (b) => b.toString(16).padStart(2, "0")).join("");
 
@@ -65,13 +66,16 @@ export class LocalStore {
     return `at://${this.did}/${collection}/${rkey}`;
   }
 
-  /** Create a record. Like a PDS createRecord, an existing rkey is an error. */
+  /**
+   * Write a record. Writing an existing rkey replaces it (put semantics): the
+   * domain code updates state-machine records this way, and checks for
+   * existence itself where a duplicate must be refused.
+   */
   async write({ collection, record, rkey }) {
     if (!collection) throw new Error("write: collection is required");
     if (record === null || typeof record !== "object") throw new Error("write: record must be an object");
     const key = rkey || nextTid();
     const map = this.collections.get(collection) ?? new Map();
-    if (map.has(key)) throw new Error(`write: record already exists: ${collection}/${key}`);
     const value = JSON.parse(JSON.stringify(record));
     const cid = await digest(JSON.stringify(value));
     map.set(key, { cid, value });
@@ -96,6 +100,30 @@ export class LocalStore {
     const next = start + size < keys.length ? page[page.length - 1] : undefined;
     const records = page.filter((k) => !prefix || k.startsWith(prefix)).map((k) => view(k, map.get(k)));
     return next ? { records, cursor: next } : { records };
+  }
+
+  /**
+   * Sealed records: stored with a read-cap (the writer plus explicit
+   * recipients), and returned by sealedRead only to a store whose did is in
+   * that read-cap. NOTE: this enforces who may read through this API; it does
+   * NOT encrypt. The record sits in localStorage as plain JSON on this device.
+   * The method names match the SDK the domain code was written against.
+   */
+  async encryptedWrite({ innerType, record, recipients = [], rkey }) {
+    if (!innerType) throw new Error("encryptedWrite: innerType is required");
+    const readCap = [...new Set([this.did, ...recipients])].sort();
+    const keyId = (await digest(readCap.join("\n"))) ?? "local-readcap";
+    const createdAt = new Date().toISOString();
+    const receipt = await this.write({ collection: SEALED_PREFIX + innerType, record: { sender: this.did, readCap, keyId, createdAt, value: record }, rkey });
+    return { uri: receipt.uri, cid: receipt.cid, keyId };
+  }
+
+  async encryptedRead({ innerType, cursor, limit }) {
+    const page = await this.read({ collection: SEALED_PREFIX + innerType, cursor, limit });
+    const records = page.records
+      .filter((r) => Array.isArray(r.value?.readCap) && r.value.readCap.includes(this.did))
+      .map((r) => ({ uri: r.uri, cid: r.cid, value: r.value.value, sender: r.value.sender, createdAt: r.value.createdAt, keyId: r.value.keyId }));
+    return page.cursor ? { records, cursor: page.cursor } : { records };
   }
 
   /** All records of a collection, for the UI. */
