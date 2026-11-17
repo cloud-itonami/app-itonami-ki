@@ -12,7 +12,7 @@
  * artifacts (counted as snapshot_count).
  */
 
-import type { Etzhayyim } from "@etzhayyim/sdk";
+import type { LocalStore } from "../local-store.js";
 import {
   absorbDid,
   absorbRkey,
@@ -49,7 +49,7 @@ const RING_DEFAULT_MAX_SCAN = 5_000;
  * hakkou (ferment), or a generic transfer source.
  */
 export async function absorb(
-  e: Etzhayyim,
+  e: LocalStore,
   input: AbsorbInput
 ): Promise<AbsorbOutput> {
   if (!input.absorbId || !input.sourceVertexId || !input.content || !input.inputKind) {
@@ -100,7 +100,7 @@ export async function absorb(
  * persists the (already-computed) synthesis payload.
  */
 export async function synthesize(
-  e: Etzhayyim,
+  e: LocalStore,
   input: SynthesizeInput
 ): Promise<SynthesizeOutput> {
   if (!input.synthesizeId || !input.absorbId) {
@@ -193,7 +193,7 @@ export async function synthesize(
  * (phloem distribution). One BloomRecord per (bloomId, synthesizeId) pair.
  */
 export async function bloom(
-  e: Etzhayyim,
+  e: LocalStore,
   input: BloomInput
 ): Promise<BloomOutput> {
   if (!input.bloomId || !input.synthesizeId) {
@@ -255,7 +255,7 @@ export async function bloom(
  * and record the period verbatim in the RingRecord.
  */
 export async function ring(
-  e: Etzhayyim,
+  e: LocalStore,
   input: RingInput
 ): Promise<RingOutput> {
   if (!input.ringId || !input.period) {
@@ -324,7 +324,7 @@ export async function ring(
  * mapRoute: Network route mapping for vascular connectivity.
  */
 export async function mapRoute(
-  e: Etzhayyim,
+  e: LocalStore,
   input: any
 ): Promise<any> {
   if (!input.routeId || !input.source || !input.destination || !input.gateway) {
@@ -367,7 +367,7 @@ export async function mapRoute(
  * getStatus: Retrieve status of synthesize or bloom operations.
  */
 export async function getStatus(
-  e: Etzhayyim,
+  e: LocalStore,
   input: any
 ): Promise<any> {
   if (input.synthesizeId) {

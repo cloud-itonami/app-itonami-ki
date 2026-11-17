@@ -1,17 +1,18 @@
-import { describe, it, expect, beforeEach } from "vitest";
-import { MockEtzhayyim } from "@etzhayyim/sdk-mock";
+import { describe, it, beforeEach } from "node:test";
+import { expect } from "./expect.mjs";
+import { LocalStore } from "../dist/local-store.js";
 import {
   synthesize,
   bloom,
   mapRoute,
   getStatus,
-} from "../src/index.js";
+} from "../dist/domain/index.js";
 
 describe("ki kotoba", () => {
   let e: any;
 
   beforeEach(() => {
-    e = new MockEtzhayyim({ did: "did:web:ki.itonami.cloud" });
+    e = new LocalStore({ did: "did:web:ki.itonami.cloud" });
   });
 
   describe("synthesize", () => {
