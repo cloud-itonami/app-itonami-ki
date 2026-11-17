@@ -67,20 +67,35 @@ test("every UI action is wired to a function and every collection is declared", 
   assert.ok(app.collections.length > 0);
 });
 
-test("the local store round-trips through storage and rejects duplicate keys", async () => {
+test("the local store round-trips through storage and replaces on rewrite", async () => {
   const { LocalStore } = await import(resolve(root, "dist/local-store.js"));
   const mem = new Map();
   const storage = { getItem: (k) => mem.get(k) ?? null, setItem: (k, v) => mem.set(k, v) };
   const a = new LocalStore({ did: "did:example:t", storage, key: "t" });
   const w = await a.write({ collection: "c", record: { n: 1 }, rkey: "r1" });
   assert.equal(w.uri, "at://did:example:t/c/r1");
-  await assert.rejects(a.write({ collection: "c", record: { n: 2 }, rkey: "r1" }));
+  await a.write({ collection: "c", record: { n: 2 }, rkey: "r1" });
   const b = new LocalStore({ did: "did:example:t", storage, key: "t" });
-  assert.equal((await b.read({ collection: "c", rkey: "r1" })).records[0].value.n, 1);
+  assert.equal((await b.read({ collection: "c", rkey: "r1" })).records[0].value.n, 2);
+  assert.equal(b.count("c"), 1);
   for (let i = 0; i < 5; i++) await b.write({ collection: "p", record: { i }, rkey: `k${i}` });
   const p1 = await b.read({ collection: "p", limit: 2 });
   const p2 = await b.read({ collection: "p", limit: 2, cursor: p1.cursor });
   assert.deepEqual([...p1.records, ...p2.records].map((r) => r.value.i), [0, 1, 2, 3]);
   const failing = new LocalStore({ did: "did:example:t", storage: { getItem: () => null, setItem: () => { throw new Error("quota"); } }, key: "t" });
   await assert.rejects(failing.write({ collection: "c", record: {}, rkey: "x" }), /local save failed/);
+});
+
+test("sealed records are returned only to dids in their read-cap", async () => {
+  const { LocalStore } = await import(resolve(root, "dist/local-store.js"));
+  const mem = new Map();
+  const storage = { getItem: (k) => mem.get(k) ?? null, setItem: (k, v) => mem.set(k, v) };
+  const owner = new LocalStore({ did: "did:example:owner", storage, key: "s" });
+  const r = await owner.encryptedWrite({ innerType: "t.secret", record: { x: 1 }, recipients: ["did:example:friend"], rkey: "a" });
+  assert.ok(r.keyId);
+  assert.equal((await owner.encryptedRead({ innerType: "t.secret" })).records[0].value.x, 1);
+  const friend = new LocalStore({ did: "did:example:friend", storage, key: "s" });
+  assert.equal((await friend.encryptedRead({ innerType: "t.secret" })).records.length, 1);
+  const outsider = new LocalStore({ did: "did:example:other", storage, key: "s" });
+  assert.equal((await outsider.encryptedRead({ innerType: "t.secret" })).records.length, 0);
 });
