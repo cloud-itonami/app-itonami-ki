@@ -1,6 +1,6 @@
 # ki kotoba
 
-Phase E Option B reference implementation of ki (樹液 / sap) on the etzhayyim substrate.
+Phase E Option B reference implementation of ki (樹液 / sap) on the itonami substrate.
 
 Per [ADR-2605203000](../../../90-docs/adr/2605203000-kotoba-write-target-options.md), ki migrates from vendor's `createKyselyDb` pattern (RW direct write via dispatcher proxy) to **Option B** — PDS XRPC writes via `@etzhayyim/sdk e.write()`.
 
@@ -22,8 +22,8 @@ periodically  →  ring       →  RingRecord       (dendrochronology snapshot)
 ## Architectural note (different from sibling kotoba packages)
 
 Vendor's ki is a thin-edge dispatcher — its Worker proxies XRPC calls to
-`dispatcher.etzhayyim.com`, which writes the underlying record into RisingWave.
-On the etzhayyim substrate per ADR-2605111200:
+`dispatcher.itonami.cloud`, which writes the underlying record into RisingWave.
+On the itonami substrate per ADR-2605111200:
 
 - The CF Worker stays a **pure thin XRPC facade** (no RW write, no createKyselyDb).
 - The LangServer pod owns the LLM call (`synthesize` stage) and writes the SynthesisRecord directly via `e.write()`.
@@ -34,22 +34,22 @@ Same Option B `e.write()` API for all 4 procedures — the call site differs.
 ## Authority-chain DIDs
 
 ```
-did:web:ki.etzhayyim.com                              — controller
-did:web:ki.etzhayyim.com:absorb:{absorbId-slug}       — AbsorbRecord
-did:web:ki.etzhayyim.com:synthesis:{artifactId-slug}  — SynthesisRecord
-did:web:ki.etzhayyim.com:bloom:{bloomId-slug}         — BloomRecord
-did:web:ki.etzhayyim.com:ring:{ringId-slug}           — RingRecord
+did:web:ki.itonami.cloud                              — controller
+did:web:ki.itonami.cloud:absorb:{absorbId-slug}       — AbsorbRecord
+did:web:ki.itonami.cloud:synthesis:{artifactId-slug}  — SynthesisRecord
+did:web:ki.itonami.cloud:bloom:{bloomId-slug}         — BloomRecord
+did:web:ki.itonami.cloud:ring:{ringId-slug}           — RingRecord
 ```
 
 ## Usage
 
 ```ts
-import { Etzhayyim } from "@etzhayyim/sdk";
-import { absorb, synthesize, bloom, ring } from "@etzhayyim/ki-kotoba";
+import { Itonami } from "@etzhayyim/sdk";
+import { absorb, synthesize, bloom, ring } from "@itonami/ki-kotoba";
 
-const e = new Etzhayyim({
-  did: "did:web:ki.etzhayyim.com",
-  pdsUrl: "https://pds.etzhayyim.com",
+const e = new Itonami({
+  did: "did:web:ki.itonami.cloud",
+  pdsUrl: "https://pds.itonami.cloud",
   l2RpcUrl: "https://mainnet.base.org",
 });
 
@@ -106,7 +106,7 @@ Option A (vendor RW mirror) rejected — ADR-2605172000 mandates kotoba.
 
 - [ADR-2605203000](../../../90-docs/adr/2605203000-kotoba-write-target-options.md) — Phase E write-target options
 - [ADR-2605111200](../../../90-docs/adr/2605111200-cf-worker-edge-only-no-rw-connection.md) — CF Worker edge-only
-- [hanrei kotoba](../../etzhayyim-project-hanrei/kotoba/) — Option B reference (31/31 ✓)
-- [ipaddress kotoba](../../etzhayyim-project-ipaddress/kotoba/) — Option B reference (37/37 ✓)
-- [sbom kotoba](../../etzhayyim-project-sbom/kotoba/) — Option B reference (17/N, canonical ✓)
-- [kiyo kotoba](../../etzhayyim-project-kiyo/kotoba/) — Option B reference (12/12 ✓)
+- [hanrei kotoba](../../itonami-project-hanrei/kotoba/) — Option B reference (31/31 ✓)
+- [ipaddress kotoba](../../itonami-project-ipaddress/kotoba/) — Option B reference (37/37 ✓)
+- [sbom kotoba](../../itonami-project-sbom/kotoba/) — Option B reference (17/N, canonical ✓)
+- [kiyo kotoba](../../itonami-project-kiyo/kotoba/) — Option B reference (12/12 ✓)

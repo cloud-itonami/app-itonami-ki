@@ -1,7 +1,7 @@
 {
-  "name": "@etzhayyim/ki-kotoba",
+  "name": "@itonami/ki-kotoba",
   "version": "0.1.0",
-  "description": "Phase E Option B reference impl of ki (vascular system) on the etzhayyim substrate",
+  "description": "Phase E Option B reference impl of ki (vascular system) on the itonami substrate",
   "type": "module",
   "main": "src/index.ts",
   "private": true,

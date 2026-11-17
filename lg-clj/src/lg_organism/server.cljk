@@ -40,7 +40,7 @@
 
 (def NSID-MAP
   "canonical XRPC NSID → assistant-id (parity with `_NSID_TO_ASSISTANT`)."
-  (into {"com.etzhayyim.apps.organism.health" "health"}
+  (into {"cloud.itonami.apps.organism.health" "health"}
         (for [nsid (keys tasks/*task-handlers*)]
           [nsid (tasks/nsid->assistant nsid)])))
 

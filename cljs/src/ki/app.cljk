@@ -1,5 +1,5 @@
 (ns ki.app
-  "com-etzhayyim-app-ki appview — reagent + re-frame, view built from
+  "app-itonami-ki appview — reagent + re-frame, view built from
   jp-go-dds (デジタル庁デザインシステム) hiccup.
 
   Faithful port of the previous SvelteKit scaffold's status page
@@ -13,7 +13,7 @@
   - `:app/route-count`, `:app/routes`, and `:app/vars` were `0`, `[]`,
     and `[]` in the Svelte constant — stale placeholders that never
     reflected this repo's actual `wrangler.jsonc` (2 routes,
-    `k1k1b001.etzhayyim.com/*` and `ki.etzhayyim.com/*`; 8 declared
+    `k1k1b001.itonami.cloud/*` and `ki.itonami.cloud/*`; 8 declared
     `vars` keys). This port reports what `wrangler.jsonc` actually
     declares instead of carrying the stale zeros forward.
   - `:app/relative-path` now names this file, not the deleted Svelte one.
@@ -38,11 +38,11 @@
 
     (require '[jp-go-dds.page :as page] '[clojure.java.io :as io])
     (spit \"public/index.html\"
-          (page/->page {:title \"etzhayyim-project-ki\"
+          (page/->page {:title \"itonami-project-ki\"
                          :lang \"ja\"
                          :description \"app-ki — vascular synthesis layer appview (reagent + re-frame + jp-go-dds).\"
                          :css (slurp (io/resource \"jp_go_dds/dds.css\"))}
-                        [:div {:id \"app\"} \"etzhayyim-project-ki loading…\"]
+                        [:div {:id \"app\"} \"itonami-project-ki loading…\"]
                         [:script {:src \"js/app.js\"}]))"
   (:require [reagent.dom :as rdom]
             [re-frame.core :as rf]
@@ -54,12 +54,12 @@
 ;; held (title/project/name/kind/routeCount/routes/vars/xrpc/relativePath).
 
 (def default-db
-  {:app/title "Ai etzhayyim Project Ki"
-   :app/project "etzhayyim-project-ki"
-   :app/name "etzhayyim-project-ki"
+  {:app/title "Ai itonami Project Ki"
+   :app/project "itonami-project-ki"
+   :app/name "itonami-project-ki"
    :app/kind "cloudflare surface"
    :app/route-count 2
-   :app/routes ["k1k1b001.etzhayyim.com/*" "ki.etzhayyim.com/*"]
+   :app/routes ["k1k1b001.itonami.cloud/*" "ki.itonami.cloud/*"]
    :app/vars ["AGENTGATEWAY_MCP_ROUTER_URL" "APP_CAPABILITIES" "APP_DESCRIPTION"
               "APP_DISPLAY_NAME" "APP_FRAMEWORK" "APP_NANOID" "APP_PERFORMER_TYPE"
               "APP_UI_TYPE"]

@@ -87,34 +87,34 @@
   "Injectable NSID→handler map (the actor swap seam). Deployers rebind entries
   to kotoba-Datom-log-backed impls; tests rebind to assertion stubs."
   {;; hakkou
-   "com.etzhayyim.hakkou.createFermentRecord"      task-create-ferment-record
-   "com.etzhayyim.hakkou.llmTransform"             task-llm-transform
-   "com.etzhayyim.hakkou.finalizeFerment"          task-finalize-ferment
+   "cloud.itonami.hakkou.createFermentRecord"      task-create-ferment-record
+   "cloud.itonami.hakkou.llmTransform"             task-llm-transform
+   "cloud.itonami.hakkou.finalizeFerment"          task-finalize-ferment
    ;; kabi
-   "com.etzhayyim.apps.kabi.anastomosisProbe"      task-anastomosis-probe
+   "cloud.itonami.apps.kabi.anastomosisProbe"      task-anastomosis-probe
    ;; ki
-   "com.etzhayyim.ki.absorb"                       task-absorb
-   "com.etzhayyim.ki.synthesize"                   task-synthesize
-   "com.etzhayyim.ki.bloom"                        task-bloom
-   "com.etzhayyim.ki.ring"                         task-ring
+   "cloud.itonami.ki.absorb"                       task-absorb
+   "cloud.itonami.ki.synthesize"                   task-synthesize
+   "cloud.itonami.ki.bloom"                        task-bloom
+   "cloud.itonami.ki.ring"                         task-ring
    ;; kinoko
-   "com.etzhayyim.apps.kinoko.checkFlowThreshold"  task-check-flow-threshold
+   "cloud.itonami.apps.kinoko.checkFlowThreshold"  task-check-flow-threshold
    ;; kobo
-   "com.etzhayyim.apps.kobo.budAgent"              task-bud-agent
-   "com.etzhayyim.apps.kobo.sporulate"             task-sporulate
-   "com.etzhayyim.apps.kobo.germinate"             task-germinate
+   "cloud.itonami.apps.kobo.budAgent"              task-bud-agent
+   "cloud.itonami.apps.kobo.sporulate"             task-sporulate
+   "cloud.itonami.apps.kobo.germinate"             task-germinate
    ;; koke
-   "com.etzhayyim.koke.scanRawSignals"             task-scan-raw-signals
-   "com.etzhayyim.koke.fixSignal"                  task-fix-signal
-   "com.etzhayyim.koke.classifyFixation"           task-classify-fixation
-   "com.etzhayyim.koke.handoffToHakkou"            task-handoff-to-hakkou
-   "com.etzhayyim.koke.handoffToSaikin"            task-handoff-to-saikin
+   "cloud.itonami.koke.scanRawSignals"             task-scan-raw-signals
+   "cloud.itonami.koke.fixSignal"                  task-fix-signal
+   "cloud.itonami.koke.classifyFixation"           task-classify-fixation
+   "cloud.itonami.koke.handoffToHakkou"            task-handoff-to-hakkou
+   "cloud.itonami.koke.handoffToSaikin"            task-handoff-to-saikin
    ;; saikin
-   "com.etzhayyim.apps.saikin.probeEnvironment"    task-probe-environment
-   "com.etzhayyim.apps.saikin.transferSignal"      task-transfer-signal
-   "com.etzhayyim.apps.saikin.formColony"          task-form-colony
-   "com.etzhayyim.apps.saikin.lyse"                task-lyse
-   "com.etzhayyim.apps.saikin.handoffToKi"         task-handoff-to-ki})
+   "cloud.itonami.apps.saikin.probeEnvironment"    task-probe-environment
+   "cloud.itonami.apps.saikin.transferSignal"      task-transfer-signal
+   "cloud.itonami.apps.saikin.formColony"          task-form-colony
+   "cloud.itonami.apps.saikin.lyse"                task-lyse
+   "cloud.itonami.apps.saikin.handoffToKi"         task-handoff-to-ki})
 
 (defn nsid->assistant
   "NSID → graph/assistant id = the last dotted segment (parity with the Python

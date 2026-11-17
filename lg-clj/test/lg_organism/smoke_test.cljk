@@ -42,7 +42,7 @@
 (deftest nsid-map-completeness
   (is (= (inc (count tasks/*task-handlers*)) (count server/NSID-MAP))
       "every task NSID + the health NSID is mapped")
-  (is (= "health" (get server/NSID-MAP "com.etzhayyim.apps.organism.health"))))
+  (is (= "health" (get server/NSID-MAP "cloud.itonami.apps.organism.health"))))
 
 (deftest all-graphs-invocable
   (doseq [[nm graph] server/GRAPHS]
@@ -51,8 +51,8 @@
 
 (deftest nsid-last-segment
   (is (= "anastomosisProbe"
-         (tasks/nsid->assistant "com.etzhayyim.apps.kabi.anastomosisProbe")))
-  (is (= "absorb" (tasks/nsid->assistant "com.etzhayyim.ki.absorb"))))
+         (tasks/nsid->assistant "cloud.itonami.apps.kabi.anastomosisProbe")))
+  (is (= "absorb" (tasks/nsid->assistant "cloud.itonami.ki.absorb"))))
 
 ;; ── endpoints (/ok, /health, /runs, /xrpc) ──────────────────────────────────
 
@@ -75,7 +75,7 @@
   ;; DEVIATION-NOTE: faithful to server.py, an UNMAPPED NSID returns 501
   ;; (the Python test_smoke.py asserts 404, which the deployed server does NOT
   ;; actually return — we mirror the runtime, not the aspirational test).
-  (is (= 501 (:status (server/dispatch-xrpc "com.etzhayyim.ki.unknownMethod" {})))))
+  (is (= 501 (:status (server/dispatch-xrpc "cloud.itonami.ki.unknownMethod" {})))))
 
 ;; ── single-node graph topology + worker echo ────────────────────────────────
 
@@ -99,7 +99,7 @@
     (is (= "ok" (get-in r [:body :output :status])))))
 
 (deftest dispatch-xrpc-maps-nsid
-  (let [r (server/dispatch-xrpc "com.etzhayyim.koke.fixSignal" {:x 1})]
+  (let [r (server/dispatch-xrpc "cloud.itonami.koke.fixSignal" {:x 1})]
     (is (= 200 (:status r)))
     (is (= "koke" (get-in r [:body :output :worker])))
     (is (= "fixSignal" (get-in r [:body :output :task])))))
@@ -109,7 +109,7 @@
 (deftest handler-exception-becomes-500
   (binding [tasks/*task-handlers*
             (assoc tasks/*task-handlers*
-                   "com.etzhayyim.ki.bloom"
+                   "cloud.itonami.ki.bloom"
                    (fn [_in] (throw (ex-info "boom" {}))))]
     (let [r (server/dispatch-run {:assistant_id "bloom" :input {}})]
       (is (= 500 (:status r)))
@@ -120,7 +120,7 @@
 (deftest task-handler-swap
   (binding [tasks/*task-handlers*
             (assoc tasks/*task-handlers*
-                   "com.etzhayyim.ki.ring"
+                   "cloud.itonami.ki.ring"
                    (fn [in] {:status "swapped" :echo in}))]
     (let [r (server/dispatch-run {:assistant_id "ring" :input {:k :v}})]
       (is (= 200 (:status r)))

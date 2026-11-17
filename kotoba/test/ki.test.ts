@@ -11,7 +11,7 @@ describe("ki kotoba", () => {
   let e: any;
 
   beforeEach(() => {
-    e = new MockEtzhayyim({ did: "did:web:ki.etzhayyim.com" });
+    e = new MockEtzhayyim({ did: "did:web:ki.itonami.cloud" });
   });
 
   describe("synthesize", () => {
