@@ -36,10 +36,10 @@ import {
   type SynthesizeOutput,
 } from "./types.js";
 
-const ABSORB_COLLECTION = "com.etzhayyim.ki.absorb";
-const SYNTHESIS_COLLECTION = "com.etzhayyim.ki.synthesis";
-const BLOOM_COLLECTION = "com.etzhayyim.ki.bloom";
-const RING_COLLECTION = "com.etzhayyim.ki.ring";
+const ABSORB_COLLECTION = "cloud.itonami.ki.absorb";
+const SYNTHESIS_COLLECTION = "cloud.itonami.ki.synthesis";
+const BLOOM_COLLECTION = "cloud.itonami.ki.bloom";
+const RING_COLLECTION = "cloud.itonami.ki.ring";
 
 const PAGE_LIMIT = 100;
 const RING_DEFAULT_MAX_SCAN = 5_000;
@@ -332,7 +332,7 @@ export async function mapRoute(
   }
   const rkey = `route-${input.routeId}`;
   const existing = await e
-    .read({ collection: "com.etzhayyim.ki.route", rkey })
+    .read({ collection: "cloud.itonami.ki.route", rkey })
     .catch(() => ({ records: [] }));
   if (existing.records[0]?.value) {
     return {
@@ -350,12 +350,12 @@ export async function mapRoute(
     createdAt: now,
   };
   await e.write({
-    collection: "com.etzhayyim.ki.route",
+    collection: "cloud.itonami.ki.route",
     record,
     rkey,
   });
   // Construct URI
-  const routeUri = `at://did:web:ki.etzhayyim.com/com.etzhayyim.ki.route/${rkey}`;
+  const routeUri = `at://did:web:ki.itonami.cloud/cloud.itonami.ki.route/${rkey}`;
   return {
     status: "mapped",
     routeUri,

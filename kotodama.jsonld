@@ -1,6 +1,6 @@
 {
-  "@context": "https://etzhayyim.com/ns/kotodama/v1",
-  "@id": "did:web:ki.etzhayyim.com",
+  "@context": "https://itonami.cloud/ns/kotodama/v1",
+  "@id": "did:web:ki.itonami.cloud",
   "name": "ki",
   "nanoid": "k1k1b001",
   "project": "ki",
@@ -14,7 +14,7 @@
     "avatar": "木",
     "isBot": true,
     "agentType": "autonomous",
-    "operator": "etzhayyim",
+    "operator": "itonami",
     "capabilities": ["vascular-synthesis", "knowledge-artifact", "growth-ring", "llm-synthesis"],
     "protocols": ["xrpc", "mcp"]
   },
@@ -24,7 +24,7 @@
   },
   "triggers": {
     "subscribeRepos": {
-      "collections": ["com.etzhayyim.ki.absorb"]
+      "collections": ["cloud.itonami.ki.absorb"]
     }
   }
 }

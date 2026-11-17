@@ -1,4 +1,4 @@
-# com-etzhayyim-app-ki
+# app-itonami-ki
 
 ki (木) — vascular synthesis layer. Absorbs raw signals via xylem, synthesizes
 structured knowledge artifacts via LLM, publishes via phloem bloom, and

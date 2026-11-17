@@ -13,20 +13,20 @@
  *   ring       → RingRecord       (time-window snapshot, dendrochronology)
  *
  * Note on architecture: ki is a thin-edge dispatcher in vendor — its
- * Worker proxies XRPC calls to dispatcher.etzhayyim.com which then writes to
- * RisingWave. On the etzhayyim substrate, ki's record stream IS the
+ * Worker proxies XRPC calls to dispatcher.itonami.cloud which then writes to
+ * RisingWave. On the itonami substrate, ki's record stream IS the
  * dispatch — the LangServer pod owns the LLM call and writes the
  * SynthesisRecord directly via e.write(). Worker = pure thin facade.
  *
  * Identity hierarchy:
- *   did:web:ki.etzhayyim.com                              — controller
- *   did:web:ki.etzhayyim.com:absorb:{absorbId}            — AbsorbRecord
- *   did:web:ki.etzhayyim.com:synthesis:{artifactId}       — SynthesisRecord
- *   did:web:ki.etzhayyim.com:bloom:{bloomId}              — BloomRecord
- *   did:web:ki.etzhayyim.com:ring:{ringId}                — RingRecord
+ *   did:web:ki.itonami.cloud                              — controller
+ *   did:web:ki.itonami.cloud:absorb:{absorbId}            — AbsorbRecord
+ *   did:web:ki.itonami.cloud:synthesis:{artifactId}       — SynthesisRecord
+ *   did:web:ki.itonami.cloud:bloom:{bloomId}              — BloomRecord
+ *   did:web:ki.itonami.cloud:ring:{ringId}                — RingRecord
  */
 
-export const KI_DID_PREFIX = "did:web:ki.etzhayyim.com:" as const;
+export const KI_DID_PREFIX = "did:web:ki.itonami.cloud:" as const;
 
 // ─── Absorb tier ────────────────────────────────────────────────────
 
